@@ -1,4 +1,6 @@
-const API_URL = "http://127.0.0.1:5000/api";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://nakshatra-app-n2n7.onrender.com/api";
 
 export async function apiRequest(endpoint, options = {}) {
   const token = localStorage.getItem("token");
