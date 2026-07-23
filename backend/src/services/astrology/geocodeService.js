@@ -1,4 +1,4 @@
-const NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
+const API_KEY = process.env.OPENCAGE_API_KEY;
 
 export const getCoordinates = async (place) => {
   if (!place) {
@@ -6,16 +6,11 @@ export const getCoordinates = async (place) => {
   }
 
   const url =
-    `${NOMINATIM_URL}?q=${encodeURIComponent(place)}&format=json&limit=1`;
+    `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(place)}&key=${API_KEY}&limit=1`;
 
   console.log("Searching location:", place);
 
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Nakshatra Astrology App",
-      Accept: "application/json",
-    },
-  });
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`Unable to fetch location. Status ${response.status}`);
@@ -23,13 +18,13 @@ export const getCoordinates = async (place) => {
 
   const data = await response.json();
 
-  if (!data.length) {
+  if (!data.results || data.results.length === 0) {
     throw new Error("Location not found.");
   }
 
   return {
-    latitude: Number(data[0].lat),
-    longitude: Number(data[0].lon),
-    displayName: data[0].display_name,
+    latitude: Number(data.results[0].geometry.lat),
+    longitude: Number(data.results[0].geometry.lng),
+    displayName: data.results[0].formatted,
   };
 };
