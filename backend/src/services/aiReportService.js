@@ -67,6 +67,17 @@ const localReport = (numerology) => {
 };
 
 // -------------------------------
+// Helper Function
+// -------------------------------
+
+const cleanGeminiResponse = (text) => {
+  return text
+    .replace(/```json/g, "")
+    .replace(/```/g, "")
+    .trim();
+};
+
+// -------------------------------
 // Gemini AI Report
 // -------------------------------
 
@@ -113,9 +124,11 @@ Return:
       contents: prompt,
     });
 
-    const text = result.text.trim();
+    let text = result.text.trim();
 
     console.log(text);
+
+    text = cleanGeminiResponse(text);
 
     return JSON.parse(text);
 
@@ -202,10 +215,12 @@ Only JSON.
 
     });
 
-    const text = result.text.trim();
+    let text = result.text.trim();
 
     console.log("========== DAILY HOROSCOPE ==========");
     console.log(text);
+
+    text = cleanGeminiResponse(text);
 
     return JSON.parse(text);
 
