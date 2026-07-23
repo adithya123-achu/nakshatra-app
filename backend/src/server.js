@@ -9,9 +9,11 @@ const startServer = async () => {
 
     console.log("Step 2: Starting Express Server...");
 
-    const server = app.listen(env.port, "127.0.0.1", () => {
+    const PORT = process.env.PORT || env.port;
+
+    const server = app.listen(PORT, "0.0.0.0", () => {
       console.log(
-        `🚀 Nakshatra API running on http://127.0.0.1:${env.port} [${env.nodeEnv}]`
+        `🚀 Nakshatra API running on port ${PORT} [${env.nodeEnv}]`
       );
       console.log("Server Info:", server.address());
     });
